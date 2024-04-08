@@ -3,12 +3,12 @@ package _com6.ingecine.Controller;
 import _com6.ingecine.Model.MovieFunction;
 import _com6.ingecine.Repository.MovieFunctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/movieFunction")
+import java.util.List;
+
+@RestController
+@RequestMapping("/movieFunction")
 public class MovieFunctionController {
     @Autowired
     private MovieFunctionRepository repository;
@@ -17,22 +17,22 @@ public class MovieFunctionController {
     }
 
     @PostMapping("/create")
-    public MovieFunction createMovieFunction(MovieFunction movieFunction) {
+    public MovieFunction createMovieFunction(@RequestBody MovieFunction movieFunction) {
         return repository.save(movieFunction);
     }
 
     @GetMapping("/get")
-    public MovieFunction getMovieFunction(Long id) {
-        return repository.getReferenceById(id);
+    public List<MovieFunction> getMovieFunction() {
+        return repository.findAll();
     }
 
-    @DeleteMapping("/delete")
-    public void deleteMovieFunction(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
     @PostMapping("/update")
-    public MovieFunction updateMovieFunction(MovieFunction movieFunction) {
+    public MovieFunction updateMovieFunction(@RequestBody MovieFunction movieFunction) {
         if (repository.existsById(movieFunction.getId())) {
             repository.deleteById(movieFunction.getId());
             return repository.save(movieFunction);

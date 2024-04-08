@@ -3,12 +3,12 @@ package _com6.ingecine.Controller;
 import _com6.ingecine.Model.Combo;
 import _com6.ingecine.Repository.ComboRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/combo")
+import java.util.List;
+
+@RestController
+@RequestMapping("/combo")
 public class ComboController {
     @Autowired
     private ComboRepository repository;
@@ -17,22 +17,22 @@ public class ComboController {
     }
 
     @PostMapping("/create")
-    public Combo createCombo(Combo combo) {
+    public Combo createCombo(@RequestBody Combo combo) {
         return repository.save(combo);
     }
 
     @GetMapping("/get")
-    public Combo getCombo(Long id) {
-        return repository.getReferenceById(id);
+    public List<Combo> getCombo() {
+        return repository.findAll();
     }
 
-    @DeleteMapping("/delete")
-    public void deleteCombo(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
     @PostMapping("/update")
-    public Combo updateCombo(Combo combo) {
+    public Combo updateCombo(@RequestBody Combo combo) {
         if (repository.existsById(combo.getId())) {
             repository.deleteById(combo.getId());
             return repository.save(combo);

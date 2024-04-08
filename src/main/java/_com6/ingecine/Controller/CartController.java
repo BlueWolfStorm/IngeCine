@@ -3,12 +3,12 @@ package _com6.ingecine.Controller;
 import _com6.ingecine.Model.Cart;
 import _com6.ingecine.Repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/cart")
+import java.util.List;
+
+@RestController
+@RequestMapping("/cart")
 public class CartController {
     @Autowired
     private CartRepository repository;
@@ -17,22 +17,22 @@ public class CartController {
     }
 
     @PostMapping("/create")
-    public Cart createCart(Cart cart) {
+    public Cart createCart(@RequestBody Cart cart) {
         return repository.save(cart);
     }
 
     @GetMapping("/get")
-    public Cart getCart(Long id) {
-        return repository.getReferenceById(id);
+    public List<Cart> getCart() {
+        return repository.findAll();
     }
 
-    @DeleteMapping("/delete")
-    public void deleteCart(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
     @PostMapping("/update")
-    public Cart updateCart(Cart cart) {
+    public Cart updateCart(@RequestBody Cart cart) {
         if (repository.existsById(cart.getId())) {
             repository.deleteById(cart.getId());
             return repository.save(cart);

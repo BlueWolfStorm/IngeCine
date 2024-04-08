@@ -3,12 +3,12 @@ package _com6.ingecine.Controller;
 import _com6.ingecine.Model.UserAccount;
 import _com6.ingecine.Repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/userAccount")
+import java.util.List;
+
+@RestController
+@RequestMapping("/userAccount")
 public class UserAccountController {
     @Autowired
     private UserAccountRepository repository;
@@ -17,22 +17,22 @@ public class UserAccountController {
     }
 
     @PostMapping("/create")
-    public UserAccount createUserAccount(UserAccount userAccount) {
+    public UserAccount createUserAccount(@RequestBody UserAccount userAccount) {
         return repository.save(userAccount);
     }
 
     @GetMapping("/get")
-    public UserAccount getUserAccount(Long id) {
-        return repository.getReferenceById(id);
+    public List<UserAccount> getUserAccount() {
+        return repository.findAll();
     }
 
-    @DeleteMapping("/delete")
-    public void deleteUserAccount(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
     @PostMapping("/update")
-    public UserAccount updateUserAccount(UserAccount userAccount) {
+    public UserAccount updateUserAccount(@RequestBody UserAccount userAccount) {
         if (repository.existsById(userAccount.getId())) {
             repository.deleteById(userAccount.getId());
             return repository.save(userAccount);

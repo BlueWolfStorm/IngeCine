@@ -3,12 +3,12 @@ package _com6.ingecine.Controller;
 import _com6.ingecine.Model.Genre;
 import _com6.ingecine.Repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/genre")
+import java.util.List;
+
+@RestController
+@RequestMapping("/genre")
 public class GenreController {
     @Autowired
     private GenreRepository repository;
@@ -17,22 +17,22 @@ public class GenreController {
     }
 
     @PostMapping("/create")
-    public Genre createGenre(Genre genre) {
+    public Genre createGenre(@RequestBody Genre genre) {
         return repository.save(genre);
     }
 
     @GetMapping("/get")
-    public Genre getGenre(Long id) {
-        return repository.getReferenceById(id);
+    public List<Genre> getGenre() {
+        return repository.findAll();
     }
 
-    @DeleteMapping("/delete")
-    public void deleteGenre(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) {
         repository.deleteById(id);
     }
 
     @PostMapping("/update")
-    public Genre updateGenre(Genre genre) {
+    public Genre updateGenre(@RequestBody Genre genre) {
         if (repository.existsById(genre.getId())) {
             repository.deleteById(genre.getId());
             return repository.save(genre);
