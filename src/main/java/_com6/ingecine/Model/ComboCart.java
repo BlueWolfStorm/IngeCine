@@ -12,7 +12,7 @@ import lombok.*;
 public class ComboCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     private Cart cart;
